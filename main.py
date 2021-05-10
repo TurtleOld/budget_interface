@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from settings_database import cursor, connection
+from psycopg2 import Error
 
 window = Tk()
 window.title("Домашняя бухгалтерия")
@@ -10,6 +11,8 @@ if connection:
     label_connection = Label(text="Подключение к базе данных прошло успешно!")
     label_connection.place(x=15, y=1)
     label_connection.config(fg="Green")
+else:
+    Error
 
 
 def receipt_seller():
