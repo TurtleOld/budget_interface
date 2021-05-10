@@ -1,6 +1,6 @@
 import os
 import psycopg2 as psycopg2
-from psycopg2 import Error, sql
+from psycopg2 import Error
 from dotenv import load_dotenv
 
 load_dotenv()
