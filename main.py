@@ -1,7 +1,6 @@
 import tkinter
 from tkinter import ttk, END
 from settings_database import cursor, connection
-from psycopg2 import Error
 
 window = tkinter.Tk()
 window.title("Домашняя бухгалтерия")
@@ -28,27 +27,33 @@ comboBox["values"] = receipt_seller()
 comboBox.place(x=15, y=25)
 
 
-def get_all_info():
+def get_all_from_database():
     value = comboBox.get()
     cursor.execute(
-        f"SELECT date_receipt, time_receipt, name_seller, total_sum FROM receipt WHERE name_seller='{value}' GROUP BY name_seller, time_receipt, date_receipt, total_sum")
+        f"SELECT date_receipt, time_receipt, name_product, total_sum FROM receipt WHERE name_seller='{value}' GROUP BY date_receipt, time_receipt, name_product, total_sum ORDER BY date_receipt")
     return cursor
 
 
-def get_seller():
-    list_date = tkinter.Listbox()
-    for date_item in get_all_info():
-        list_date.insert(END, date_item[0])
-    list_date.place(x=15, y=75)
-    list_date.config(width=15, height=5)
-    list_time = tkinter.Listbox()
-    for time_item in get_all_info():
-        list_time.insert(END, time_item[1])
-    list_time.place(x=100, y=75)
-    list_time.config(width=15, height=5)
+def get_all_info_receipt():
+    columns = ("#1", "#2", "#3")
+    tree = ttk.Treeview(show="headings", columns=columns)
+    tree.heading("#1", text="Дата")
+    tree.column("#1", width=75)
+    tree.heading("#2", text="Время")
+    tree.column("#2", width=75)
+    tree.heading("#3", text="Название продукта")
+    tree.column("#3", width=350)
+
+    for item in get_all_from_database():
+        tree.insert("", END, values=item)
+    tree.place(relx=0.02, rely=0.1)
+
+    scroll = tkinter.Scrollbar(window, orient="vertical", command=tree.yview)
+    scroll.place(x=520, y=65, height=220)
+    tree.configure(yscrollcommand=scroll.set)
 
 
-btn = tkinter.Button(window, text="Get", command=get_seller)
+btn = tkinter.Button(window, text="Get", command=get_all_info_receipt)
 btn.place(x=500, y=22)
 
 window.mainloop()
