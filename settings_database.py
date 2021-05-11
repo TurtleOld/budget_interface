@@ -30,5 +30,3 @@ except (Exception, Error) as e:
 
 connection.autocommit = True
 cursor = connection.cursor()
-
-
