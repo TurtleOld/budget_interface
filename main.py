@@ -12,7 +12,7 @@ if connection:
     label_connection.place(x=15, y=1)
     label_connection.config(fg="Green")
 else:
-    Error
+    psycopg2.Error
 
 
 def receipt_seller():
