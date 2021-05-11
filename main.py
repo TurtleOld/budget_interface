@@ -11,8 +11,6 @@ if connection:
     label_connection = Label(text="Подключение к базе данных прошло успешно!")
     label_connection.place(x=15, y=1)
     label_connection.config(fg="Green")
-else:
-    psycopg2.Error
 
 
 def receipt_seller():
