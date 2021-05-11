@@ -1,4 +1,4 @@
-from tkinter import *
+import tkinter
 from tkinter import ttk
 from settings_database import cursor, connection
 from psycopg2 import Error
