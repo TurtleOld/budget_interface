@@ -1,14 +1,14 @@
 import tkinter
-from tkinter import ttk
+from tkinter import ttk, END
 from settings_database import cursor, connection
 from psycopg2 import Error
 
-window = Tk()
+window = tkinter.Tk()
 window.title("Домашняя бухгалтерия")
 window.geometry("800x600")
 
 if connection:
-    label_connection = Label(text="Подключение к базе данных прошло успешно!")
+    label_connection = tkinter.Label(text="Подключение к базе данных прошло успешно!")
     label_connection.place(x=15, y=1)
     label_connection.config(fg="Green")
 
@@ -36,19 +36,19 @@ def get_all_info():
 
 
 def get_seller():
-    list_date = Listbox()
+    list_date = tkinter.Listbox()
     for date_item in get_all_info():
         list_date.insert(END, date_item[0])
     list_date.place(x=15, y=75)
     list_date.config(width=15, height=5)
-    list_time = Listbox()
+    list_time = tkinter.Listbox()
     for time_item in get_all_info():
         list_time.insert(END, time_item[1])
     list_time.place(x=100, y=75)
     list_time.config(width=15, height=5)
 
 
-btn = Button(window, text="Get", command=get_seller)
+btn = tkinter.Button(window, text="Get", command=get_seller)
 btn.place(x=500, y=22)
 
 window.mainloop()
