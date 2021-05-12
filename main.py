@@ -61,6 +61,6 @@ def get_all_info_receipt():
 
 
 btn = tkinter.Button(window, text="Get", command=get_all_info_receipt)
-btn.place(x=500, y=22)
+btn.place(x=15, y=300)
 
 window.mainloop()
