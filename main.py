@@ -5,6 +5,7 @@ from settings_database import cursor, connection
 window = tkinter.Tk()
 window.title("Домашняя бухгалтерия")
 window.geometry("800x400")
+window.iconbitmap(r"ico\victory_43837.ico")
 
 if connection:
     label_connection = tkinter.Label(text="Подключение к базе данных прошло успешно!")
