@@ -55,6 +55,13 @@ def get_all_info_receipt():
         tree.insert("", END, values=item)
     tree.place(relx=0.013, rely=0.13)
 
+    for index, total in enumerate(get_all_from_database()):
+        total_sum = tkinter.Label(text=f"Итоговый чек: {total[6]}")
+        total_sum.place(x=500, y=300)
+        total_sum.config(fg="Green")
+        if index == 0:
+            break
+
     scroll = tkinter.Scrollbar(window, orient="vertical", command=tree.yview)
     scroll.place(x=777, y=53, height=225)
     tree.configure(yscrollcommand=scroll.set)
