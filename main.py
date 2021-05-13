@@ -31,7 +31,7 @@ comboBox.place(x=15, y=25)
 def get_all_from_database():
     value = comboBox.get()
     cursor.execute(
-        "SELECT date_receipt, time_receipt, name_product, price, quantity, amount, total_sum FROM receipt WHERE name_seller='%s' GROUP BY date_receipt, time_receipt, name_product, price, quantity, amount, total_sum ORDER BY date_receipt", (value,))
+        "SELECT date_receipt, time_receipt, name_product, price, quantity, amount, total_sum FROM receipt WHERE name_seller=%s GROUP BY date_receipt, time_receipt, name_product, price, quantity, amount, total_sum ORDER BY date_receipt", (value,))
     return cursor
 
 
