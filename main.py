@@ -1,3 +1,4 @@
+import datetime
 import tkinter
 from tkinter import ttk, END
 from settings_database import cursor, connection
@@ -27,11 +28,20 @@ comboBox = ttk.Combobox(window, width=65)
 comboBox["values"] = receipt_seller()
 comboBox.place(x=15, y=25)
 
+# Entry date
+entry_date = tkinter.Entry(window)
+now_date = datetime.datetime.now().date()
+entry_date.insert(END, now_date)
+entry_date.place(x=515, y=26)
+
+
 
 def get_all_from_database():
     value = comboBox.get()
+    value_date = entry_date.get()
     cursor.execute(
-        "SELECT date_receipt, time_receipt, name_product, price, quantity, amount, total_sum FROM receipt WHERE name_seller=%s GROUP BY date_receipt, time_receipt, name_product, price, quantity, amount, total_sum ORDER BY date_receipt", (value,))
+        "SELECT date_receipt, time_receipt, name_product, price, quantity, amount, total_sum FROM receipt WHERE name_seller=%s AND date_receipt=%s GROUP BY date_receipt, time_receipt, name_product, price, quantity, amount, total_sum ORDER BY date_receipt",
+        (value, value_date,))
     return cursor
 
 
