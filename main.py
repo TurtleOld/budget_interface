@@ -1,6 +1,7 @@
 import datetime
 import tkinter
 from tkinter import ttk, END
+import html
 from settings_database import cursor, connection
 
 window = tkinter.Tk()
@@ -22,8 +23,6 @@ def receipt_seller():
     return data
 
 
-receipt_seller()
-
 comboBox = ttk.Combobox(window, width=65)
 comboBox["values"] = receipt_seller()
 comboBox.place(x=15, y=25)
@@ -33,7 +32,6 @@ entry_date = tkinter.Entry(window)
 now_date = datetime.datetime.now().date()
 entry_date.insert(END, now_date)
 entry_date.place(x=515, y=26)
-
 
 
 def get_all_from_database():
@@ -78,6 +76,16 @@ def get_all_info_receipt():
     scroll.place(x=884, y=53, height=225)
     tree.configure(yscrollcommand=scroll.set)
 
+
+def total_sum():
+    cursor.execute("SELECT sum(amount) FROM receipt")
+    for item_total_sum in cursor.fetchall():
+        for item_total_sum_prev in item_total_sum:
+            return item_total_sum_prev
+
+
+label_total_sum = tkinter.Label(window, text=f"Итог по всем чека за весь период: <b>{total_sum()}</b>")
+label_total_sum.place(x=580, y=1)
 
 btn = tkinter.Button(window, text="Get", command=get_all_info_receipt)
 btn.place(x=15, y=300)
