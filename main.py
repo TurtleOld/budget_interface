@@ -1,7 +1,6 @@
 import datetime
 import tkinter
 from tkinter import ttk, END
-import html
 from settings_database import cursor, connection
 
 window = tkinter.Tk()
@@ -43,7 +42,7 @@ def get_all_from_database():
     return cursor
 
 
-def get_all_info_receipt():
+def show_all_info_receipt():
     columns = ("#1", "#2", "#3", "#4", "#5", "#6", "#7")
     tree = ttk.Treeview(show="headings", columns=columns)
     tree.heading("#1", text="Дата")
@@ -65,18 +64,16 @@ def get_all_info_receipt():
         tree.insert("", END, values=item)
     tree.place(relx=0.013, rely=0.13)
 
-    # for index, total in enumerate(get_all_from_database()):
-    #     total_sum = tkinter.Label(text=f"Итоговый чек: {total[6]}")
-    #     total_sum.place(x=500, y=300)
-    #     total_sum.config(fg="Green")
-    #     if index == 0:
-    #         break
-
     scroll = tkinter.Scrollbar(window, orient="vertical", command=tree.yview)
     scroll.place(x=884, y=53, height=225)
     tree.configure(yscrollcommand=scroll.set)
 
 
+btn_get_info_all = tkinter.Button(window, text="Показать", command=show_all_info_receipt)
+btn_get_info_all.place(x=15, y=300)
+
+
+# Получение итоговой суммы по всем чекам за весь период
 def total_sum():
     cursor.execute("SELECT sum(amount) FROM receipt")
     for item_total_sum in cursor.fetchall():
@@ -84,10 +81,41 @@ def total_sum():
             return item_total_sum_prev
 
 
-label_total_sum = tkinter.Label(window, text=f"Итог по всем чека за весь период: <b>{total_sum()}</b>")
+label_total_sum = tkinter.Label(window, text=f"Итог по всем чека за весь период: {total_sum()}")
 label_total_sum.place(x=580, y=1)
 
-btn = tkinter.Button(window, text="Get", command=get_all_info_receipt)
-btn.place(x=15, y=300)
+
+# Получение всех чеков
+def get_all_receipt():
+    cursor.execute(
+        "SELECT date_receipt, time_receipt, name_product, price, quantity, amount, total_sum FROM receipt GROUP BY date_receipt, time_receipt, name_product, price, quantity, amount, total_sum ORDER BY date_receipt")
+    columns = ("#1", "#2", "#3", "#4", "#5", "#6", "#7")
+    tree = ttk.Treeview(show="headings", columns=columns)
+    tree.heading("#1", text="Дата")
+    tree.column("#1", width=75)
+    tree.heading("#2", text="Время")
+    tree.column("#2", width=75)
+    tree.heading("#3", text="Название продукта")
+    tree.column("#3", width=350)
+    tree.heading("#4", text="Цена")
+    tree.column("#4", width=75)
+    tree.heading("#5", text="Количество")
+    tree.column("#5", width=75)
+    tree.heading("#6", text="Сумма за товар")
+    tree.column("#6", width=110)
+    tree.heading("#7", text="Сумма чека")
+    tree.column("#7", width=110)
+
+    for item in cursor:
+        tree.insert("", END, values=item)
+    tree.place(relx=0.013, rely=0.13)
+
+    scroll = tkinter.Scrollbar(window, orient="vertical", command=tree.yview)
+    scroll.place(x=884, y=53, height=225)
+    tree.configure(yscrollcommand=scroll.set)
+
+
+btn_show_all_receipt = tkinter.Button(window, text="Показать все чеки", command=get_all_receipt)
+btn_show_all_receipt.place(x=165, y=300)
 
 window.mainloop()
