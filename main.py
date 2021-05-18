@@ -2,6 +2,8 @@ import datetime
 import tkinter
 from tkinter import ttk, END
 from settings_database import cursor, connection
+from func_settings import get_digits_month
+
 
 window = tkinter.Tk()
 window.title("Домашняя бухгалтерия")
@@ -26,16 +28,55 @@ comboBox = ttk.Combobox(window, width=65)
 comboBox["values"] = receipt_seller()
 comboBox.place(x=15, y=25)
 
-# Entry date
-entry_date = tkinter.Entry(window)
-now_date = datetime.datetime.now().date()
-entry_date.insert(END, now_date)
-entry_date.place(x=515, y=26)
+
+# Entry day
+def list_day():
+    current_day = []
+    for _ in range(1, 32, 1):
+        current_day.append(_)
+    return current_day
+
+
+day_combobox = ttk.Combobox(window, width=15)
+day_combobox["values"] = list_day()
+day_combobox.place(x=460, y=26)
+
+
+
+
+# Entry month
+def list_month():
+    month = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль",
+             "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
+    return month
+
+
+month_combobox = ttk.Combobox(window, width=15)
+month_combobox["values"] = list_month()
+month_combobox.place(x=590, y=26)
+
+
+# Entry year
+def list_years():
+    current_year = []
+    for _ in range(2021, 2030, 1):
+        current_year.append(_)
+    return current_year
+
+
+year_combobox = ttk.Combobox(window, width=15)
+year_combobox["values"] = list_years()
+year_now = datetime.datetime.now().year
+year_combobox.insert(END, year_now)
+year_combobox.place(x=750, y=26)
+
+
 
 
 def get_all_from_database_to_date():
     value = comboBox.get()
-    value_date = entry_date.get()
+    value_date = f"{year_combobox.get()}-{get_digits_month(month_combobox.get())}-{day_combobox.get()}"
+    print(value_date)
     cursor.execute(
         "SELECT date_receipt, time_receipt, name_product, price, quantity, amount, total_sum FROM receipt WHERE name_seller=%s AND date_receipt=%s GROUP BY date_receipt, time_receipt, name_product, price, quantity, amount, total_sum ORDER BY date_receipt",
         (value, value_date,))
