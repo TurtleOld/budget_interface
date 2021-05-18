@@ -33,7 +33,7 @@ entry_date.insert(END, now_date)
 entry_date.place(x=515, y=26)
 
 
-def get_all_from_database():
+def get_all_from_database_to_date():
     value = comboBox.get()
     value_date = entry_date.get()
     cursor.execute(
@@ -60,7 +60,7 @@ def show_all_info_receipt():
     tree.heading("#7", text="Сумма чека")
     tree.column("#7", width=110)
 
-    for item in get_all_from_database():
+    for item in get_all_from_database_to_date():
         tree.insert("", END, values=item)
     tree.place(relx=0.013, rely=0.13)
 
@@ -81,7 +81,7 @@ def total_sum():
             return item_total_sum_prev
 
 
-label_total_sum = tkinter.Label(window, text=f"Итог по всем чека за весь период: {total_sum()}")
+label_total_sum = tkinter.Label(window, text=f"Итог по всем чекам за весь период: {total_sum()}")
 label_total_sum.place(x=580, y=1)
 
 
